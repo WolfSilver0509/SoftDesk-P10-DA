@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
+from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 
 from projetAPP.models import Contributors, Projects, Issues, Comments
@@ -11,7 +12,7 @@ from projetAPP.serializers import (
 )
 
 
-class ContributorsAPIView(APIView):
+class ContributorsAPIView(ModelViewSet):
     """
     API endpoint qui permet de lister tous les contributeurs, ou de créer un nouveau contributeur.
 
@@ -19,21 +20,27 @@ class ContributorsAPIView(APIView):
     Sérialise les données en utilisant le serializer de Django REST Framework.
     Renvoie les données sérialisées en JSON.
     """
+    serializer_class = ContributorsSerializer
 
-    def get(self, *args, **kwargs):
+    def get_queryset(self):
         """
         Récupère tous les contributeurs en utilisant l'ORM de Django.
         """
-        contributors = Contributors.objects.all()
-        serializer = ContributorsSerializer(contributors, many=True)
-        return Response(serializer.data)
+        return Contributors.objects.all()
 
-    def post(self, *args, **kwargs):
-        """
-        Crée un nouveau contributeur en utilisant le serializer de Django REST Framework.
 
+class ProjectsAPIView(ModelViewSet):
+    """
+    API endpoint qui permet de lister tous les projets, ou de créer un nouveau projet.
+
+    Récupère tous les projets en utilisant l'ORM de Django.
+    Sérialise les données en utilisant le serializer de Django REST Framework.
+    Renvoie les données sérialisées en JSON.
+    """
+    serializer_class = ProjectsSerializer
+
+    def get_queryset(self):
         """
-        serializer = ContributorsSerializer(data=self.request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data)
+        Récupère tous les projets en utilisant l'ORM de Django.
+        """
+        return Projects.objects.all()
