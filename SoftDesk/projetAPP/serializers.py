@@ -9,10 +9,26 @@ class ContributorsSerializer(serializers.ModelSerializer):
         fields = ["user_id", "project_id", "permission", "role"]
 
 
-class ProjectsSerializer(serializers.ModelSerializer):
+class ProjectsListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Projects
         fields = ["project_id", "title", "description", "type", "author_user_id"]
+
+class ProjectsDetailSerializer(serializers.ModelSerializer):
+
+    contributors = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Projects
+        fields = ["project_id", "title", "description", "type", "author_user_id", "contributors"]
+
+    def get_contributors(self, instance):
+
+        serializer = ContributorsSerializer(many=True, read_only=True)
+        # la propriété .data permet de récupérer les données sérialisées
+        return serializer.data
+
+
 
 
 class IssuesSerializer(serializers.ModelSerializer):
