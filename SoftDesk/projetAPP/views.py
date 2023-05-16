@@ -31,7 +31,10 @@ class ContributorsAPIView(ModelViewSet):
         # # Récupération de tous les contributors dans une variable nommée queryset
         # queryset = Contributors.objects.filter(active=True)
 
-        return Contributors.objects.all()
+        # # Récupération de tous les issues dans une variable nommée queryset
+        queryset = Contributors.objects.filter(project_id=self.kwargs['project_pk'])
+
+        return queryset
 
     def get_serializer_class(self):
         """
@@ -125,7 +128,10 @@ class CommentsAPIView(ModelViewSet):
         # # Récupération de tous les comments dans une variable nommée queryset
         # queryset = Comments.objects.filter(active=True)
 
-        return Comments.objects.all()
+        # # Récupération de tous les commentaires dans une variable nommée queryset
+        queryset = Comments.objects.filter(issue_id=self.kwargs['issue_pk'])
+
+        return queryset
 
     def get_serializer_class(self):
         """

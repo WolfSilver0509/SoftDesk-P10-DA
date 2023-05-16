@@ -15,14 +15,25 @@ router = routers.SimpleRouter()
 
 # Déclaration des routes pour les vues basées sur les views
 
-
+# BAse route
 router.register("projects", ProjectsAPIView, basename="projects")
+# Project route register : /projects/<project_pk>/
 project_router = routers.NestedSimpleRouter(router, r'projects', lookup='project')
+
+# Add project sous route : /projects/<pk>/issues/<pk>
 project_router.register(r'issues', IssuesAPIView, basename='projects_issues')
+# Add project sous route  route : /projects/<pk>/users/<pk>
+project_router.register(r'users',ContributorsAPIView, basename='projects_users' )
+# - ----------------------------------------------------------------------------------------
+# Issues route register : /projects/<project_pk>/issues/<issue_pk>/
+issues_router = routers.NestedSimpleRouter(project_router, r'issues', lookup='issue')
+# add issues sous route :  /projects/<project_pk>/issues/<issue_pk>/comments/<comment_pk>
+issues_router.register(r'comments', CommentsAPIView, basename='issues_comments')
 
 # router.register("issues", IssuesAPIView, basename="issues")
 router.register("comments", CommentsAPIView, basename="comments")
 router.register("contributors", ContributorsAPIView, basename="contributors")
+
 
 
 urlpatterns = [
@@ -35,4 +46,5 @@ urlpatterns = [
     # path("api/projects/", ProjectsAPIView.as_view(), name="projects"),
     path("api/", include(router.urls)),
     path("api/", include(project_router.urls)),
+    path("api/", include(issues_router.urls)),
 ]
