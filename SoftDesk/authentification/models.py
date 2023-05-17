@@ -36,7 +36,8 @@ class ManagerUser(BaseUserManager):
 
 
 class User(AbstractUser):
-    user_id = models.AutoField(primary_key=True, default=0)
+    username = None
+    user_id = models.AutoField(primary_key=True)
     first_name = models.CharField(max_length=128)
     last_name = models.CharField(max_length=128)
     email = models.EmailField(unique=True, max_length=255, blank=False)
@@ -44,8 +45,8 @@ class User(AbstractUser):
     is_staff = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
 
-    USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["first_name", "last_name"]
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
     objects = ManagerUser()
 
     def has_perm(self, perm, obj=None):
