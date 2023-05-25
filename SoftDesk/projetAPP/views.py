@@ -2,6 +2,7 @@ from django.shortcuts import render
 # from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 
 from projetAPP.models import Contributors, Projects, Issues, Comments
 from projetAPP.serializers import (
@@ -57,6 +58,16 @@ class ProjectsAPIView(ModelViewSet):
 
     detail_serializer_class = ProjectsDetailSerializer
 
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+
+        serializer.save(author_user_id=self.request.user)
+
+    def perform_update(self, serializer):
+
+        serializer.save(author_user_id=self.request.user)
+
 
     def get_queryset(self):
         """
@@ -87,7 +98,17 @@ class IssuesAPIView(ModelViewSet):
     serializer_class = IssuesListSerializer
 
     detail_serializer_class = IssuesDetailSerializer
+#------------------------------------------------------------------
+    permission_classes = [IsAuthenticated]
 
+    def perform_create(self, serializer):
+
+        serializer.save(author_user_id=self.request.user)
+
+    def perform_update(self, serializer):
+
+        serializer.save(author_user_id=self.request.user)
+#-------------------------------------------------------------------
     def get_queryset(self):
         """
         Récupère tous les issues en utilisant l'ORM de Django.
