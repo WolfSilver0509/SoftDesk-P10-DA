@@ -25,6 +25,8 @@ class ContributorsAPIView(ModelViewSet):
 
     detail_serializer_class = ContributorsDetailSerializer
 
+    permission_classes = [IsAuthenticated]
+
     def get_queryset(self):
         """
         Récupère tous les contributeurs en utilisant l'ORM de Django.
@@ -103,15 +105,17 @@ class IssuesAPIView(ModelViewSet):
 
     def perform_create(self, serializer):
 
-        serializer.save(author_user_id=self.request.user)
+        project_id = self.kwargs['project_pk']
+
+        serializer.save(author_user_id=self.request.user, project_id=self.kwargs['project_pk'])
 
     def perform_update(self, serializer):
 
-        serializer.save(author_user_id=self.request.user)
+        serializer.save(author_user_id=self.request.user,project_id=self.kwargs['project_pk'])
 #-------------------------------------------------------------------
     def get_queryset(self):
         """
-        Récupère tous les issues en utilisant l'ORM de Django.
+        Récupère toutes les issues en utilisant l'ORM de Django.
         """
         # # Récupération de tous les issues dans une variable nommée queryset
         queryset = Issues.objects.filter(project_id=self.kwargs['project_pk'])
@@ -141,6 +145,17 @@ class CommentsAPIView(ModelViewSet):
     serializer_class = CommentsListSerializer
 
     detail_serializer_class = CommentsDetailSerializer
+
+    # ------------------------------------------------------------------
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(author_user_id=self.request.user)
+
+    def perform_update(self, serializer):
+        serializer.save(author_user_id=self.request.user)
+
+    # -------------------------------------------------------------------
 
     def get_queryset(self):
         """

@@ -75,9 +75,11 @@ class IssuesListSerializer(serializers.ModelSerializer):
         queryset=User.objects.all(),
         default=serializers.CurrentUserDefault()
     )
+    project_id = serializers.SerializerMethodField()
     class Meta:
         model = Issues
         fields = [
+            "id",
             "title",
             "desc",
             "tag",
@@ -89,16 +91,21 @@ class IssuesListSerializer(serializers.ModelSerializer):
             "created_time",
         ]
 
+        def get_project_id(self, instance):
+            return self.context['view'].kwargs['project_pk']
+
 class IssuesDetailSerializer(serializers.ModelSerializer):
     author_user_id = serializers.PrimaryKeyRelatedField(
         queryset=User.objects.all()
     )
+    project_id = serializers.SerializerMethodField()
 
     comments = serializers.SerializerMethodField()
 
     class Meta:
         model = Issues
         fields = [
+            "id",
             "title",
             "desc",
             "tag",
@@ -111,6 +118,9 @@ class IssuesDetailSerializer(serializers.ModelSerializer):
             "comments",
         ]
 
+        def get_project_id(self, instance):
+            return self.context['view'].kwargs['project_pk']
+
     def get_comments(self, instance):
 
         serializer = CommentsListSerializer(many=True, read_only=True)
@@ -118,6 +128,11 @@ class IssuesDetailSerializer(serializers.ModelSerializer):
         return serializer.data
 
 class CommentsListSerializer(serializers.ModelSerializer):
+
+    author_user_id = serializers.PrimaryKeyRelatedField(
+        queryset=User.objects.all(),
+        default = serializers.CurrentUserDefault()
+    )
     class Meta:
         model = Comments
         fields = [
@@ -130,7 +145,10 @@ class CommentsListSerializer(serializers.ModelSerializer):
 
 class CommentsDetailSerializer(serializers.ModelSerializer):
 
-    author_user_id = serializers.SerializerMethodField()
+    author_user_id = serializers.PrimaryKeyRelatedField(
+        queryset=User.objects.all()
+    )
+    # author_user_id = serializers.SerializerMethodField()
 
     class Meta:
         model = Comments

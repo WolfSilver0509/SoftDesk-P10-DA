@@ -29,7 +29,7 @@ class Contributors(models.Model):
 
 
 class Issues(models.Model):
-    issue_id = models.AutoField(primary_key=True)
+    #issue_id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=128)
     desc = models.CharField(max_length=1000)
     tag = models.CharField(max_length=128)
