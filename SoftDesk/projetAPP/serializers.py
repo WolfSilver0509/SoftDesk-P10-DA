@@ -91,8 +91,9 @@ class IssuesListSerializer(serializers.ModelSerializer):
             "created_time",
         ]
 
-        def get_project_id(self, instance):
-            return self.context['view'].kwargs['project_pk']
+
+    def get_project_id(self, instance):
+        return self.context['view'].kwargs['project_pk']
 
 class IssuesDetailSerializer(serializers.ModelSerializer):
     author_user_id = serializers.PrimaryKeyRelatedField(
@@ -142,6 +143,7 @@ class CommentsListSerializer(serializers.ModelSerializer):
             "issue_id",
             "created_time",
         ]
+        read_only_fields = ["issue_id"]
 
 class CommentsDetailSerializer(serializers.ModelSerializer):
 
@@ -159,6 +161,7 @@ class CommentsDetailSerializer(serializers.ModelSerializer):
             "issue_id",
             "created_time",
         ]
+
 
     def get_author_user_id(self, instance):
 
