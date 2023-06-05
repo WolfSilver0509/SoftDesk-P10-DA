@@ -12,7 +12,7 @@ from projetAPP.serializers import (
     CommentsDetailSerializer, CommentsListSerializer
 )
 
-from projetAPP.permissions import AuthorOrReadOnly
+from projetAPP.permissions import ProjectAuthor
 
 class ContributorsAPIView(ModelViewSet):
     """
@@ -26,7 +26,14 @@ class ContributorsAPIView(ModelViewSet):
 
     detail_serializer_class = ContributorsDetailSerializer
 
-    permission_classes = [IsAuthenticated, AuthorOrReadOnly]
+    permission_classes = [IsAuthenticated, ProjectAuthor]
+
+    def perform_create(self, serializer):
+
+        project_id = self.kwargs['project_pk']
+        project = Projects.objects.get(project_id=project_id)
+
+        serializer.save(project_id=project)
 
     def get_queryset(self):
         """

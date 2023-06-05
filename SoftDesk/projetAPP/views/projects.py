@@ -13,6 +13,8 @@ from projetAPP.serializers import (
 
 from projetAPP.permissions import AuthorOrReadOnly
 
+from django.db.models import Q
+
 class ProjectsAPIView(ModelViewSet):
     """
     API endpoint qui permet de lister tous les projets, ou de créer un nouveau projet.
@@ -25,7 +27,7 @@ class ProjectsAPIView(ModelViewSet):
 
     detail_serializer_class = ProjectsDetailSerializer
 
-    permission_classes = [IsAuthenticated , AuthorOrReadOnly]
+    permission_classes = [IsAuthenticated, AuthorOrReadOnly]
 
     def perform_create(self, serializer):
 
@@ -42,8 +44,8 @@ class ProjectsAPIView(ModelViewSet):
         """
         # # Récupération de tous les projects dans une variable nommée queryset
         # queryset = Projects.objects.filter(active=True)
-
-        return Projects.objects.all()
+        queryset = Projects.objects.filter(Q(author_user_id = self.request.user)|Q(contributors__user_id= self.request.user))
+        return queryset
 
     def get_serializer_class(self):
         """

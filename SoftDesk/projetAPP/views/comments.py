@@ -11,7 +11,7 @@ from projetAPP.serializers import (
     IssuesDetailSerializer, IssuesListSerializer,
     CommentsDetailSerializer, CommentsListSerializer)
 
-from projetAPP.permissions import AuthorOrReadOnly
+from projetAPP.permissions import AuthorOrReadOnly, IsContributor
 
 class CommentsAPIView(ModelViewSet):
     """
@@ -26,7 +26,7 @@ class CommentsAPIView(ModelViewSet):
     detail_serializer_class = CommentsDetailSerializer
 
     # ------------------------------------------------------------------
-    permission_classes = [IsAuthenticated, AuthorOrReadOnly]
+    permission_classes = [IsAuthenticated, AuthorOrReadOnly, IsContributor]
 
     def perform_create(self, serializer):
 

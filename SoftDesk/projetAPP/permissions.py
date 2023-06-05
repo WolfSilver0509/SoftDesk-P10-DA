@@ -19,6 +19,23 @@ class AuthorOrReadOnly(permissions.BasePermission):
         return False
 
 
+class ProjectAuthor(permissions.BasePermission):
+
+    def has_permission(self, request, view):
+        """ lecture seule """
+
+        project_id = view.kwargs.get('project_pk')
+
+        author = Projects.objects.filter(author_user_id=request.user, project_id=project_id)
+        if author:
+            return True
+        elif view.action in ["retrieve", "list"] :
+            return True
+        return False
+
+
+
+
 
 
 class IsContributor(permissions.BasePermission):
@@ -34,22 +51,12 @@ class IsContributor(permissions.BasePermission):
 
             project_id = view.kwargs.get('project_pk')
 
-            # print(issue_id)
-            #
-            # issue = Issues.objects.get(id = issue_id)
-
             contributor = Contributors.objects.filter(user_id = request.user , project_id = project_id)
 
             author =  Projects.objects.filter(author_user_id = request.user, project_id = project_id )
 
-            print(contributor)
-
             if contributor or author:
                 return True
             return False
-
-            # Vérifie si l'issue est assignée à l'utilisateur
-            # if Issue.objects.filter(id=issue_id, assignee_user_id=request.user).exists():
-            #     return True
 
         return False

@@ -8,6 +8,7 @@ class ContributorsListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contributors
         fields = ["user_id", "project_id", "permission", "role"]
+        read_only_fields = ["project_id"]
 
 class ContributorsDetailSerializer(serializers.ModelSerializer):
 
@@ -58,15 +59,12 @@ class ProjectsDetailSerializer(serializers.ModelSerializer):
         queryset=User.objects.all()
     )
 
-    contributors = serializers.SerializerMethodField()
+    contributors = ContributorsListSerializer(many=True, read_only=True)
 
     class Meta:
         model = Projects
         fields = ["project_id", "title", "description", "type", "author_user_id", "contributors"]
 
-    def get_contributors(self, instance):
-        serializer = ContributorsListSerializer(many=True, read_only=True)
-        return serializer.data
 
 
 
