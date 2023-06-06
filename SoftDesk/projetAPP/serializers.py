@@ -117,8 +117,8 @@ class IssuesDetailSerializer(serializers.ModelSerializer):
             "comments",
         ]
 
-        def get_project_id(self, instance):
-            return self.context['view'].kwargs['project_pk']
+    def get_project_id(self, instance):
+        return self.context['view'].kwargs['project_pk']
 
     def get_comments(self, instance):
 
