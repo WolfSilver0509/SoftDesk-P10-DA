@@ -124,6 +124,7 @@ Afin de tester les différentes fonctionalités du site, 2 comptes utilisateurs 
 :mag: Il ne vous reste plus qu'à parcourir la documentation de SoftDesk afin d'essayer toutes ces points de terminaison d'API.
 
 
+:point_right: Pour lancer le serveur tapez la commande suivante : [ici - Documentation Postman](https://documenter.getpostman.com/view/17892890/2s93m62hvQ)
 
 
 <h3 align="left">Languages and Tools:</h3>
