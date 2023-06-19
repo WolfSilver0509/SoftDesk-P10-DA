@@ -112,7 +112,7 @@ python manage.py runserver
 ``` 
 
 
-Afin de tester les différentes fonctionalités du site, 2 comptes utilisateurs ont été créés : 
+Afin de tester les différentes fonctionalités du site, 3 comptes utilisateurs ont été créés : 
 
 *redmoon@gmail.com
 *password
