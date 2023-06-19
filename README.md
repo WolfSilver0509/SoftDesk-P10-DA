@@ -120,6 +120,9 @@ Afin de tester les différentes fonctionalités du site, 2 comptes utilisateurs 
 *yumi@gmail.com
 *lyoko
 
+*ulrich@gmail.com
+*lyoko
+
 
 :mag: Il ne vous reste plus qu'à parcourir la documentation de SoftDesk afin d'essayer toutes ces points de terminaison d'API.
 
